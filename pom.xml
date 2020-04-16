@@ -1,0 +1,558 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>apigee</groupId>
+	<artifactId>projectname-proxyname-v1</artifactId>
+	<version>-</version>
+	<name>projectname-proxyname-${deployment.suffix}v1</name>
+	<packaging>pom</packaging>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>central</id>
+			<name>Maven Plugin Repository</name>
+			<url>https://repo.maven.apache.org/maven2</url>
+			<layout>default</layout>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<updatePolicy>never</updatePolicy>
+			</releases>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<org.slf4j.simpleLogger.defaultLogLevel>info</org.slf4j.simpleLogger.defaultLogLevel>
+		<project.root.dir>${basedir}</project.root.dir>
+		<target.root.dir>${basedir}/target</target.root.dir>
+		<deployment.suffix>${user.name}</deployment.suffix>
+		<commit>none</commit>
+		<branch>local</branch>
+	</properties>
+
+	<!-- This is where you add environment specific properties under various profile names 
+		 For apigee.options, refer to "Advanced Configuration Options" under https://github.com/apigee/apigee-deploy-maven-plugin#pom-xml-sample 
+	-->
+	<profiles>
+		<profile>
+			<id>test</id>
+			<!-- Uses properties from $HOME/.m2/settings.xml or environment variables via set-edge-env-values used in Jenkins -->
+			<!-- Jenkins command:
+				install -P${EdgeProfile} -Ddeployment.suffix=${EdgeDeploySuffix} -Dapigee.org=${EdgeOrg} -Dapigee.env=${EdgeEnv} 
+				-Dapi.northbound.domain=${EdgeNorthboundDomain} -Dapigee.username=${EdgeInstallUsername} -Dapigee.password=${EdgeInstallPassword} 
+				-Dapigee.config.options=update -Dapigee.config.dir=target/resources/edge -Dapigee.config.exportDir=target/test/integration 
+				-Dcommit=${GIT_COMMIT} -Dbranch=${GIT_BRANCH}
+			-->
+			<properties>
+				<apigee.profile>test</apigee.profile>
+				<apigee.env>${EdgeEnv}</apigee.env>
+				<apigee.hosturl>https://api.enterprise.apigee.com</apigee.hosturl>
+				<apigee.apiversion>v1</apigee.apiversion>
+				<apigee.org>${EdgeOrg}</apigee.org>
+				<apigee.username>${EdgeUsername}</apigee.username>
+				<apigee.password>${EdgePassword}</apigee.password>
+				<apigee.authtype>oauth</apigee.authtype>
+				<apigee.bearer>${EdgeBearer}</apigee.bearer>
+				<api.northbound.domain>${EdgeNorthboundDomain}</api.northbound.domain>
+				<api.testtag>@errorHandling,@health,@wip</api.testtag>
+				<apigee.options>validate</apigee.options>
+				<!--
+				<portal.url>https://dev-orgname.pantheonsite.io</portal.url>
+				<portal.username>${PortalUsername}</portal.username><
+				<portal.password>${PortalPassword}</portal.password>
+				<portal.format>yaml</portal.format>
+				<portal.api.doc.format>basic_html</portal.api.doc.format>
+				<portal.directory>./resources/specs</portal.directory> 
+				-->
+			</properties>
+		</profile>
+		<profile>
+			<id>prod</id>
+			<!-- Uses properties from $HOME/.m2/settings.xml or environment variables via set-edge-env-values used in Jenkins -->
+			<!-- Jenkins command:
+				install -P${EdgeProfile} -Ddeployment.suffix=${EdgeDeploySuffix} -Dapigee.org=${EdgeOrg} -Dapigee.env=${EdgeEnv} 
+				-Dapi.northbound.domain=${EdgeNorthboundDomain} -Dapigee.username=${EdgeInstallUsername} -Dapigee.password=${EdgeInstallPassword} 
+				-Dapigee.config.options=update -Dapigee.config.dir=target/resources/edge -Dapigee.config.exportDir=target/test/integration 
+				-Dcommit=${GIT_COMMIT} -Dbranch=${GIT_BRANCH}
+			-->
+			<properties>
+				<apigee.profile>prod</apigee.profile>
+				<apigee.env>${EdgeEnv}</apigee.env>
+				<apigee.hosturl>https://api.enterprise.apigee.com</apigee.hosturl>
+				<apigee.apiversion>v1</apigee.apiversion>
+				<apigee.org>${EdgeOrg}</apigee.org>
+				<apigee.username>${EdgeUsername}</apigee.username>
+				<apigee.password>${EdgePassword}</apigee.password>
+				<api.northbound.domain>${EdgeNorthboundDomain}</api.northbound.domain>
+				<api.testtag>@health</api.testtag>
+				<apigee.options>validate,override</apigee.options>
+				<apigee.override.delay>5</apigee.override.delay>
+			</properties>
+		</profile>
+		<profile>
+			<id>p3d1-test</id>
+			<!-- Uses properties from $HOME/.m2/settings.xml or environment variables via set-edge-env-values used in Jenkins -->
+			<properties>
+				<apigee.profile>p3d1-test</apigee.profile>
+				<apigee.env>${EdgeEnv}</apigee.env>
+				<apigee.hosturl>https://api.enterprise.apigee.com</apigee.hosturl>
+				<apigee.apiversion>v1</apigee.apiversion>
+				<apigee.org>${EdgeOrg}</apigee.org>
+				<apigee.username>${EdgeUsername}</apigee.username>
+				<apigee.password>${EdgePassword}</apigee.password>
+				<api.northbound.domain>${EdgeNorthboundDomain}</api.northbound.domain>
+				<api.testtag>@errorHandling,@health,@wip,@mock</api.testtag>
+			</properties>
+		</profile>
+		<profile>
+			<id>p3d1-prod</id>
+			<!-- Uses properties from $HOME/.m2/settings.xml or environment variables via set-edge-env-values used in Jenkins -->
+			<properties>
+				<apigee.profile>p3d1-prod</apigee.profile>
+				<apigee.env>${EdgeEnv}</apigee.env>
+				<apigee.hosturl>https://api.enterprise.apigee.com</apigee.hosturl>
+				<apigee.apiversion>v1</apigee.apiversion>
+				<apigee.org>${EdgeOrg}</apigee.org>
+				<apigee.username>${EdgeUsername}</apigee.username>
+				<apigee.password>${EdgePassword}</apigee.password>
+				<api.northbound.domain>${EdgeNorthboundDomain}</api.northbound.domain>
+				<api.testtag>@errorHandling,@health,@wip,@mock</api.testtag>
+				<apigee.options>override</apigee.options>
+				<apigee.override.delay>5</apigee.override.delay>
+			</properties>
+		</profile>
+		<profile>
+			<id>cicd-test</id>
+			<!-- Uses properties from $HOME/.m2/settings.xml or environment variables via set-edge-env-values used in Jenkins -->
+			<properties>
+				<apigee.profile>cicd-test</apigee.profile>
+				<apigee.env>${EdgeEnv}</apigee.env>
+				<apigee.hosturl>https://api.enterprise.apigee.com</apigee.hosturl>
+				<apigee.apiversion>v1</apigee.apiversion>
+				<apigee.org>${EdgeOrg}</apigee.org>
+				<apigee.username>${EdgeUsername}</apigee.username>
+				<apigee.password>${EdgePassword}</apigee.password>
+				<api.northbound.domain>${EdgeNorthboundDomain}</api.northbound.domain>
+				<api.testtag>@errorHandling,@health,@wip,@mock</api.testtag>
+			</properties>
+		</profile>
+		<profile>
+			<id>cicd-prod</id>
+			<!-- Uses properties from $HOME/.m2/settings.xml or environment variables via set-edge-env-values used in Jenkins -->
+			<properties>
+				<apigee.profile>cicd-prod</apigee.profile>
+				<apigee.env>${EdgeEnv}</apigee.env>
+				<apigee.hosturl>https://api.enterprise.apigee.com</apigee.hosturl>
+				<apigee.apiversion>v1</apigee.apiversion>
+				<apigee.org>${EdgeOrg}</apigee.org>
+				<apigee.username>${EdgeUsername}</apigee.username>
+				<apigee.password>${EdgePassword}</apigee.password>
+				<api.northbound.domain>${EdgeNorthboundDomain}</api.northbound.domain>
+				<api.testtag>@errorHandling,@health,@wip,@mock</api.testtag>
+				<apigee.options>override</apigee.options>
+				<apigee.override.delay>5</apigee.override.delay>
+			</properties>
+		</profile>
+	</profiles>
+
+	<build>
+		<plugins>
+			<!-- jslint -->
+			<plugin>
+				<groupId>com.cj.jshintmojo</groupId>
+				<artifactId>jshint-maven-plugin</artifactId>
+				<version>1.6.0</version>
+				<executions>
+					<!-- phase:validate artifactId:jslint:lint -->
+					<execution>
+						<id>jslint</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>lint</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<options>curly,eqeqeq,forin,latedef,undef,noempty,nonew,unused</options>
+					<directories>
+						<directory>apiproxy/resources/jsc</directory>
+					</directories>
+					<reporter>jslint</reporter>
+				</configuration>
+			</plugin>
+
+			<!-- copy the full apiproxy folder to target folder --> 
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.1.0</version>
+				<executions>
+					<!-- phase:process-resources artifactId:resources:copy-resources@copy-resources -->
+					<execution>
+						<id>copy-resources</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<overwrite>true</overwrite>
+							<resources>
+								<resource>
+									<!--source -->
+									<directory>${project.root.dir}</directory>
+									<filtering>true</filtering>
+									<includes>
+										<include>resources/**</include>
+										<include>apiproxy/**</include>
+										<include>test/integration/**</include>
+									</includes>
+								</resource>
+							</resources>
+							<!--target -->
+							<outputDirectory>${target.root.dir}</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Do replacements -->
+			<plugin>
+				<groupId>com.google.code.maven-replacer-plugin</groupId>
+				<artifactId>replacer</artifactId>
+				<version>1.5.2</version>
+				<executions>
+					<!-- phase:process-resources artifactId:process-resources replacer:replace -->
+					<execution>
+						<id>replace</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<basedir>${target.root.dir}</basedir>
+					<includes>
+						<include>apiproxy/projectname-proxyname-v1.xml</include>
+						<include>apiproxy/proxies/default.xml</include>
+						<include>test/integration/test-config.json</include>
+						<include>resources/edge/env/*/targetServers.json</include>
+						<include>resources/edge/org/apiProducts.json</include>
+						<include>resources/edge/org/developerApps.json</include>
+						<include>resources/edge/org/developers.json</include>
+						<include>resources/specs/projectname-proxyname-v1.yaml</include>
+					</includes>
+					<replacements>
+						<replacement>
+							<token>/projectname-proxyname/v1</token>
+							<value>/projectname-proxyname/${deployment.suffix}v1</value>
+						</replacement>
+						<replacement>
+							<token>projectname-proxyname-v1</token>
+							<value>projectname-proxyname-${deployment.suffix}v1</value>
+						</replacement>
+						<replacement>
+							<token>API_NORTHBOUND_DOMAIN</token>
+							<value>${api.northbound.domain}</value>
+						</replacement>
+						<replacement>
+							<token>@DESCRIPTION</token>
+							<value>commit ${commit} from ${branch} branch by ${apigee.username}</value>
+						</replacement>
+						<replacement>
+							<token>APIGEE_ENVIRONMENT</token>
+							<value>${apigee.env}</value>
+						</replacement>
+						<replacement>
+							<token>APIGEE_ORG</token>
+							<value>${apigee.org}</value>
+						</replacement>
+					</replacements>
+				</configuration>
+			</plugin>
+
+			<!-- apigee Package and Deploy -->
+			<plugin>
+				<groupId>io.apigee.build-tools.enterprise4g</groupId>
+				<artifactId>apigee-edge-maven-plugin</artifactId>
+				<version>1.1.7</version>
+				<executions>
+					<!-- phase:package artifactId:apigee-enterprise:configure -->
+					<execution>
+						<id>configure-bundle-step</id>
+						<phase>package</phase>
+						<goals>
+							<goal>configure</goal>
+						</goals>
+					</execution>
+					<!-- phase:install artifactId:apigee-enterprise:bundle -->
+					<execution>
+						<id>deploy-bundle-step</id>
+						<phase>install</phase>
+						<goals>
+							<goal>deploy</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- apigee Configurations -->
+			<plugin>
+				<groupId>com.apigee.edge.config</groupId>
+				<artifactId>apigee-config-maven-plugin</artifactId>
+				<version>1.3.8</version>
+				<executions>
+					<!-- phase:verify artifactId:apigee-config:caches -->
+					<execution>
+						<id>create-config-cache</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>caches</goal>
+						</goals>
+					</execution>
+					<!-- phase:verify artifactId:apigee-config:targetservers -->
+					<execution>
+						<id>create-config-targetserver</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>targetservers</goal>
+						</goals>
+					</execution>
+					<!-- phase:verify artifactId:apigee-config:keyvaluemaps -->
+					<execution>
+						<id>create-config-kvm</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>keyvaluemaps</goal>
+						</goals>
+					</execution>
+					<!-- phase:install artifactId:apigee-config:apiproducts -->
+					<execution>
+						<id>create-config-apiproduct</id>
+						<phase>install</phase>
+						<goals>
+							<goal>apiproducts</goal>
+						</goals>
+					</execution>
+					<!-- phase:install artifactId:apigee-config:developers -->
+					<execution>
+						<id>create-config-developer</id>
+						<phase>install</phase>
+						<goals>
+							<goal>developers</goal>
+						</goals>
+					</execution>
+					<!-- phase:install artifactId:apigee-config:apps -->
+					<execution>
+						<id>create-config-app</id>
+						<phase>install</phase>
+						<configuration>
+							<skip>${skip.apps}</skip>
+						</configuration>
+						<goals>
+							<goal>apps</goal>
+						</goals>
+					</execution>
+					<!-- phase:install artifactId:apigee-config:exportAppKeys -->
+					<execution>
+						<id>export-config-app</id>
+						<phase>install</phase>
+						<configuration>
+							<skip>${skip.export}</skip>
+						</configuration>
+						<goals>
+							<goal>exportAppKeys</goal>
+						</goals>
+					</execution>
+					<!-- phase:install artifactId:apigee-config:specs -->
+					<execution>
+						<id>create-config-specs</id>
+						<phase>install</phase>                        
+						<configuration>
+							<skip>${skip.specs}</skip>
+						</configuration>
+						<goals>
+							<goal>specs</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<!-- install node, npm install, run apigeelint, run unit, run integration frontend:goal or frontend:npm@id -->
+			<plugin>
+				<groupId>com.github.eirslett</groupId>
+				<artifactId>frontend-maven-plugin</artifactId>
+				<version>1.8.0</version>
+				<!-- NOTE: put executable in targetnode, otherwise uses node and deploy plugin thinks its a node.js proxy -->
+				<configuration>
+					<installDirectory>targetnode</installDirectory>
+					<nodeVersion>v8.4.0</nodeVersion>
+				</configuration>
+				<executions>
+					<!-- phase:validate artifactId:frontend:install-node-and-npm -->
+					<execution>
+						<id>install node and npm</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>install-node-and-npm</goal>
+						</goals>
+					</execution>
+					<!-- phase:validate artifactId:frontend:npm -->
+					<execution>
+						<id>npm-install</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<configuration>
+							<arguments>install</arguments>
+						</configuration>
+					</execution>
+					<!-- phase:validate artifactId:frontend:npm@apigeelint -->
+					<execution>
+						<id>apigeelint</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<configuration>
+							<arguments>run apigeelint</arguments>
+						</configuration>
+					</execution>
+					<!-- phase:validate artifactId:frontend:npm@unit -->
+					<!-- No javascript in this proxy
+					<execution>
+						<id>unit</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<configuration>
+							<arguments>run unit</arguments>
+						</configuration>
+					</execution>
+					-->
+					<!-- phase:install artifactId:frontend:npm@integration -->
+					<execution>
+						<id>integration</id>
+						<phase>install</phase>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<configuration>
+							<arguments>run integration -- --tags ${api.testtag}</arguments>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- apigee Smartdocs API Specs for Drupal-->
+			<plugin>
+				<groupId>com.apigee.smartdocs.config</groupId>
+				<artifactId>apigee-smartdocs-maven-plugin</artifactId>
+				<version>2.0.0</version>
+				<executions>
+					<!-- phase:install artifactId:apigee-smartdocs:apidoc -->
+					<execution>
+						<id>smartdocs-deploy</id>
+						<phase>install</phase>
+						<goals>
+							<goal>apidoc</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- run performance tests -->
+			<!--
+			<plugin>
+				<groupId>com.lazerycode.jmeter</groupId>
+				<artifactId>jmeter-maven-plugin</artifactId>
+				<version>2.2.0</version>
+				<executions>
+					<execution>
+					<id>jmeter-tests</id>
+					<phase>install</phase>
+					<goals>
+						<goal>jmeter</goal>
+					</goals>
+					<configuration>
+						<skipTests>${skipPerformanceTests}</skipTests>
+						<ignoreResultFailures>true</ignoreResultFailures>
+						<suppressJMeterOutput>false</suppressJMeterOutput>
+						<propertiesUser>
+						<testData>testdata.csv</testData>
+						<threadNum>10</threadNum>
+						<rampUpPeriodSecs>2</rampUpPeriodSecs>
+						<loopCount>10</loopCount>
+						</propertiesUser>
+					</configuration>
+					</execution>
+				</executions>
+				<configuration>
+					<testFilesDirectory>target/test/performance</testFilesDirectory>
+					<testResultsTimestamp>false</testResultsTimestamp>
+					<resultsDirectory>${project.root.dir}/results/performance</resultsDirectory>
+				</configuration>
+			</plugin>
+			-->
+					<!-- phase:install artifactId:jmeter:jmeter -->
+			<!--
+			<plugin>
+				<groupId>com.lazerycode.jmeter</groupId>
+				<artifactId>jmeter-analysis-maven-plugin</artifactId>
+				<version>1.0.6</version>
+				<executions>
+					<execution>
+					<id>jmeter-analysis</id>
+						<phase>install</phase>
+					<goals>
+						<goal>analyze</goal>
+					</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<sourceDirFailed>false</sourceDirFailed>
+					<source>${project.root.dir}/results/performance/*</source>
+							<targetDirectory>${project.root.dir}/results/performance/reports</targetDirectory>
+				</configuration>
+			</plugin>
+			-->
+					<!-- phase:install artifactId:jmeter:analyze -->
+
+			<!-- cleaning dirs -->
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>2.5</version>
+				<configuration>
+					<skip>${skip.clean}</skip>
+				</configuration>
+				<executions>
+					<!-- Don't clean on init for iteration on tests -->
+					<!-- phase:initialize artifactId:clean:clean@auto-clean-init -->
+					<execution>
+						<id>auto-clean-init</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+					</execution>
+					<!-- Don't clean target dir for debugging, post mortem -->
+					<!-- phase:install artifactId:clean:clean@auto-clean-insall -->
+					<execution>
+						<id>auto-clean-install</id>
+						<phase>install</phase>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

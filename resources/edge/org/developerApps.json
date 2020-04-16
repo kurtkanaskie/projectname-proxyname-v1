@@ -1,0 +1,17 @@
+{
+    "projectname-proxyname-v1-APIGEE_ENVIRONMENT@any.com": [
+        {
+            "name": "projectname-proxyname-v1-APIGEE_ENVIRONMENT",
+            "apiProducts": [ "projectname-proxyname-v1-APIGEE_ENVIRONMENT" ],
+            "keyExpiresIn": -1,
+            "callbackUrl": "NA",
+            "scopes": [],
+            "attributes": [
+                {
+                    "name": "custom.privacy",
+                    "value": "confidential"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Manifest name="manifest">
+    <Policies>
+        <VersionInfo resourceName="CR-Status" version="SHA-512:8f21c0965b67d32d78ea17a2db32620ec4b9e01f550bee1934b4d18e5d24d7dc6062470b3bd69619c38523b3f77eab1c5b2443c1710044cb1329f4b4ba175551"/>
+        <VersionInfo resourceName="KV-Configuration" version="SHA-512:39c9ad78b279c7ff0658b86e96ab1d91d0ad846fced5762518b2438fc0f7ed4b40b1abb8701e95b6d142c8c083119cc5708dc218ca60fa2779731c79e514b1de"/>
+        <VersionInfo resourceName="VA-Header" version="SHA-512:b88753f4120e9f14967845cbc360778d86a084b659fa8a48caba55a88d77fdd2f5f5927c69dc0243e535f939132ac4c16e708e46eda023dc63a444b70f853f37"/>
+    </Policies>
+    <ProxyEndpoints>
+        <VersionInfo resourceName="default" version="SHA-512:6e27fe72e8995e8bb9dafc89d5a95c2ded44301a512dd2eb5dbdf44df7c6a57f7511767a1ad7e8ecd62619227d23f317fd321cc33f1a92032957293e0c6d66cf"/>
+    </ProxyEndpoints>
+    <Resources/>
+    <SharedFlows/>
+    <TargetEndpoints>
+        <VersionInfo resourceName="default" version="SHA-512:78c145206a4c7dfd4f2d0231c12259a9d346dce4f56d3673a2bdc23b4f25268c24c11f32f7409cb1503415d4fbcea1000e4381622ff8dea86dfdcc6163b8b3d6"/>
+    </TargetEndpoints>
+</Manifest>

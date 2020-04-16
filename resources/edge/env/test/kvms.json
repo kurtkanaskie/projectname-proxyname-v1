@@ -1,0 +1,12 @@
+[
+    {
+        "name": "projectname-proxyname-v1",
+        "encrypted": false,
+        "entry": [
+            {
+                "name": "target_basepath",
+                "value": "/echo"
+            }
+        ]
+    }
+]

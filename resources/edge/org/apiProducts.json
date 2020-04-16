@@ -1,0 +1,32 @@
+[
+    {
+        "name": "projectname-proxyname-v1-APIGEE_ENVIRONMENT",
+        "apiResources": [
+            "/",
+            "/**"
+        ],
+        "approvalType": "auto",
+        "attributes": [
+            {
+                "name" : "access",
+                "value" : "internal"
+            },
+            {
+                "name": "custom.description",
+                "value": "Product to test projectname-proxyname-v1 API for APIGEE_ENVIRONMENT env"
+            }
+        ],
+        "description": "Product to test projectname-proxyname-v1 API in APIGEE_ENVIRONMENT env",
+        "displayName": "projectname-proxyname-v1-APIGEE_ENVIRONMENT",
+        "environments": [
+            "APIGEE_ENVIRONMENT"
+        ],
+        "proxies": [
+            "projectname-proxyname-v1"
+        ],
+        "quota": "10000",
+        "quotaInterval": "1",
+        "quotaTimeUnit": "month",
+        "scopes": []
+    }  
+]

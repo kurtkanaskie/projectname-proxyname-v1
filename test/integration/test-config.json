@@ -1,0 +1,9 @@
+{
+    "apiconfig": {
+        "domain": "API_NORTHBOUND_DOMAIN",
+        "basepath": "/projectname-proxyname/v1",
+        "apiproxy": "projectname-proxyname-v1",
+		"product":"projectname-proxyname-v1-APIGEE_ENVIRONMENT",
+        "app":"projectname-proxyname-v1-APIGEE_ENVIRONMENT"
+    }
+}
