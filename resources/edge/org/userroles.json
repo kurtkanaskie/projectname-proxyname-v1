@@ -1,0 +1,51 @@
+[
+	{ 
+		"name":"ProjectName-APIDeveloper-APIGEE_ENVIRONMENT",
+		"resourcepermissions": [
+		    { "path": "/", "permissions": [ "get" ] },
+		    { "path": "/environments/", "permissions": [ "get" ] },
+		    { "path": "/environments/*/", "permissions": [ "get" ] },
+		    
+		    { "path": "/environments/prod","permissions": []},
+		    
+		    { "path": "/environments/*/virtualhosts","permissions": ["get"]},
+		    { "path": "/environments/*/virtualhosts/*","permissions": ["get"]},
+		    
+		    { "path": "/apps", "permissions": [ "get", "put" ] },
+		    { "path": "/apps/*", "permissions": [] },
+		    { "path": "/companies", "permissions": [] },
+		    { "path": "/companies/*/apps", "permissions": [] },
+		    { "path": "/companies/*/apps/*", "permissions": [] },
+		    { "path": "/developers", "permissions": [ "get", "put" ] },
+		    { "path": "/developers/*", "permissions": [] },
+		    { "path": "/developers/*/apps", "permissions": [ "put" ] },
+		    { "path": "/developers/*/apps/*", "permissions": [] },
+		    
+		    { "path": "/applications", "permissions": [ "put" ] },
+		    { "path": "/applications/*", "permissions": [] },
+		    { "path": "/environments/APIGEE_ENVIRONMENT/applications/*/revisions/*/debugsessions", "permissions": [ "put", "get" ] },
+		    { "path": "/environments/APIGEE_ENVIRONMENT/applications/*/revisions/*/deployments", "permissions": [ "put", "delete" ] },
+		    
+		    { "path": "/apiproducts", "permissions": [ "put" ] },
+		    { "path": "/apiproducts/*", "permissions": [] },
+		    
+		    {"path": "/environments/APIGEE_ENVIRONMENT/caches","permissions": ["put"]},
+		    {"path": "/environments/APIGEE_ENVIRONMENT/keyvaluemaps","permissions": ["put"]},
+		    {"path": "/environments/APIGEE_ENVIRONMENT/targetservers","permissions": ["put"]}
+		]
+	},
+	{
+		"name":"ProjectName-APIDeveloper-Resources-APIGEE_ENVIRONMENT",
+	    "resourcepermissions": [
+	        {"path": "/applications/APIGEE_PROXY_NAME","permissions": ["get","put","delete"]},
+	        {"path": "/environments/APIGEE_ENVIRONMENT/caches/projectname-proxyname-v1","permissions": ["get","put","delete"]},
+	        {"path": "/environments/APIGEE_ENVIRONMENT/keyvaluemaps/projectname-proxyname-v1","permissions": ["get","put","delete"]},
+	        {"path": "/environments/APIGEE_ENVIRONMENT/targetservers/projectname-proxyname-v1","permissions": ["get","put","delete"]},
+
+	        {"path": "/apiproducts/APIGEE_PROXY_NAME-APIGEE_ENVIRONMENT","permissions": ["get","put","delete"]},
+	        
+	        {"path": "/developers/APIGEE_PROXY_NAME-APIGEE_ENVIRONMENT@any.com","permissions": ["get","put","delete"]},
+	        {"path": "/developers/APIGEE_PROXY_NAME-APIGEE_ENVIRONMENT@any.com/apps/APIGEE_PROXY_NAME-APIGEE_ENVIRONMENT","permissions": ["get","put","delete"]},
+	    ]
+	}
+]

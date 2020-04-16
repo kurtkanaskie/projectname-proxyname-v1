@@ -85,7 +85,7 @@ components:
       type: object
       properties:
         organization:
-          example: kurtkanaskietrainer-trial
+          example: ORG_NAME
           description: The name of the organization
           type: string
         environment:
@@ -132,7 +132,7 @@ components:
       type: object
       properties:
         organization:
-          example: kurtkanaskietrainer-trial
+          example: ORG_NAME
           description: The name of the organization
           type: string
         environment:
@@ -189,7 +189,7 @@ components:
             non-descript tag and date information
           properties:
             uri:
-              example: https://kurtkanaskietrainer-trial-test.apigee.net/pingstatusmock/v1/status
+              example: https://ORG_NAME-ENVIRONMENT_NAME.apigee.net/pingstatusmock/v1/status
               description: The URI of the backend system
               type: string
             status:

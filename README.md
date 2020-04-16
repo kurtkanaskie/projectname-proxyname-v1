@@ -1,24 +1,28 @@
 # Project Specific Ping and Status API Template
 
-This proxy demonstrates a simple design to demonstrate a full CI/CD lifecycle.
-It uses the following health check or monitoring endpoints
+This proxy demonstrates a simple design to demonstrate a full CI/CD lifecycle for an API Proxy including static, unit, integration tests, API documentation for both Drupal and Integrated Portals.
+
+## TL;DR
+Clone the repository and add your Maven profile for your Apigee organization and environment.
+* Then run the [Maven Commands - full build](#maven-commands---full-build).
+
+## Overview
+The proxy has the following endpoints which can be used for health check or monitoring.
 * GET /ping - response indicates that the proxy is operational
 * GET /status - response indicates the the backend is operational
 
-These endpoints can then be used by API Monitorying with Edge to send notifications when something is wrong.
+These endpoints can then be used by API Monitoring with Edge to send notifications when something is wrong.
 
 ## Disclaimer
 
 This example is not an official Google product, nor is it part of an official Google product.
 
-## License
-Â
-This material is copyright 2019, Google LLC. and is licensed under the Apache 2.0 license.
-See the [LICENSE](LICENSE) file.
+## Notice and License
+[NOTICE](NOTICE) this material is copyright 2020, Google LLC. and [LICENSE](LICENSE) is under the Apache 2.0 license.
 
 This code is open source.
 
-## Overview
+## CI/CD Overview
 Each proxy is managed as a single source code module that is self contained with the actual Apigee Edge proxy, config files for Edge Management API calls (e.g. KVMs, target servers), Open API Specification (OAS) and tests (status, unit, integration).
 
 The key components enabling continuous integration are:
@@ -143,7 +147,7 @@ In each source directory there is a `package.json` file that holds the required 
     * cd source directory
     * `npm install` (creates node_modules)
 
-## Maven Commnds - All at once
+## Maven Commands - full build
 Replacer copies and replaces the resources dir into the target. Note use of -Dapigee.config.dir option.
 
 ### Maven all at once
@@ -155,11 +159,11 @@ Replacer copies and replaces the resources dir into the target. Note use of -Dap
 
 ## Maven Pipeline Steps
 Builds use Maven which runs via configurations in a pom file (pom.xml). Maven [default build lifecycle](https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html#Lifecycle_Reference) phases and usage:
-* validate: lint Javascript, Apigeelint
-* process-resources: copy resources and run replacements
-* package: package compiled sources into the distributable format (proxy.zip)
-* verify: caches, keyvalumaps, targetservers
-* install: install and deploy the package to a local repository
+* **validate**: lint Javascript, Apigeelint
+* **process-resources**: copy resources and run replacements
+* **package**: package compiled sources into the distributable format (proxy.zip)
+* **verify**: caches, keyvalumaps, targetservers
+* **install**: install and deploy the package to a local repository
 
 The following "outer" commands run all phases up to the current phase, while the "inner" commands run independently.
 

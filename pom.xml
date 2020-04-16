@@ -244,6 +244,7 @@
 						<include>resources/edge/org/apiProducts.json</include>
 						<include>resources/edge/org/developerApps.json</include>
 						<include>resources/edge/org/developers.json</include>
+						<include>resources/edge/org/userroles.json</include>
 						<include>resources/specs/projectname-proxyname-v1.yaml</include>
 					</includes>
 					<replacements>
@@ -256,20 +257,24 @@
 							<value>projectname-proxyname-${deployment.suffix}v1</value>
 						</replacement>
 						<replacement>
-							<token>API_NORTHBOUND_DOMAIN</token>
-							<value>${api.northbound.domain}</value>
-						</replacement>
-						<replacement>
-							<token>@DESCRIPTION</token>
-							<value>commit ${commit} from ${branch} branch by ${apigee.username}</value>
+							<token>APIGEE_ORG</token>
+							<value>${apigee.org}</value>
 						</replacement>
 						<replacement>
 							<token>APIGEE_ENVIRONMENT</token>
 							<value>${apigee.env}</value>
 						</replacement>
 						<replacement>
-							<token>APIGEE_ORG</token>
-							<value>${apigee.org}</value>
+							<token>APIGEE_PROXY_NAME</token>
+							<value>${project.artifactId}</value>
+						</replacement>
+						<replacement>
+							<token>@DESCRIPTION</token>
+							<value>commit ${commit} from ${branch} branch by ${apigee.username}</value>
+						</replacement>
+						<replacement>
+							<token>API_NORTHBOUND_DOMAIN</token>
+							<value>${api.northbound.domain}</value>
 						</replacement>
 					</replacements>
 				</configuration>
@@ -377,6 +382,17 @@
 						</configuration>
 						<goals>
 							<goal>specs</goal>
+						</goals>
+					</execution>
+					<!-- phase:install artifactId:apigee-config:specs -->
+					<execution>
+						<id>create-config-userroles</id>
+						<phase>install</phase>                        
+						<configuration>
+							<skip>${skip.userroles}</skip>
+						</configuration>
+						<goals>
+							<goal>userroles</goal>
 						</goals>
 					</execution>
 				</executions>
