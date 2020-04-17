@@ -40,27 +40,30 @@ Basically, everything that Jenkins does using Maven and other tools can be done 
 ## Git Commands
 Align Git branches with org / env combinations, with master being the lowest level in lifecycle (e.g. test), then use pull requests to merge to downstream branches reflecting higher level deployments (e.g. prod).
 
-### Intitial
+### Master Branch (lowest environment)
 * git checkout -b prod
 * git push origin prod
 * git checkout master
 
-### Feature
+
+* `mvn -P test install ...` as per [Maven Commands - full build](#maven-commands---full-build).
+
+### Feature Branches
 * git checkout -b feature/jira1 --- (MAKE changes for feature/jira1)
 
 #### Test via Jenkins
 * git commit -am  "Added changes for feature1"
 * git push origin feature/jira1
 
-If the build succeeds you're ready to move into the master branch.
+If the build succeeds you're ready to merge into the master branch.
 
-#### Merge to Master
-##### Pull Request
+#### Merge Branch to Master
+##### Pull Request via Browser
 * Go to repo and create pull request from feature/jira1 to master
 * Comment on pull request
 * Do the merge pull request "Create a merge commit" or use command line
 
-##### Via command line
+##### Pull Request via command line
 * git checkout master
 * git merge --no-ff feature/jira1
 * git push
@@ -76,44 +79,14 @@ Or using this:
 * git checkout master
 * git pull
 
-### Merge to Environments qa, stage, sandbox, prod
+### Merge Master Branch to Higher Environment Branches (e.g. prod)
 * git checkout prod
 * git pull
 * git merge --no-ff master
 * git push
 * git checkout master
 
-## Maven
-### Local Configuration
-Set your $HOME/.m2/settings.xml profile information for local builds.
-Example:
-```
-<?xml version="1.0"?>
-<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
-                 https://maven.apache.org/xsd/settings-1.0.0.xsd">
-    <profiles>
-        <profile>
-            <id>test</id>
-            <!-- These are also the values for environment variables used by set-edge-env-values.sh for Jenkins -->
-            <properties>
-                <EdgeOrg>yourorgname</EdgeOrg>
-                <EdgeEnv>yourenv</EdgeEnv>
-                <EdgeUsername>yourusername@exco.com</EdgeUsername>
-                <EdgePassword>yourpassword</EdgePassword>
-                <EdgeNorthboundDomain>yourourgname-yourenv.apigee.net</EdgeNorthboundDomain>
-                <EdgeAuthtype>oauth</EdgeAuthtype>
-            </properties>
-        </profile>
-        ...
-    </profiles>
-</settings>
-```
-#### Initial build and deploy
-`mvn -P test install ...` as per [Maven Commands - full build](#maven-commands---full-build).
-
-### Jenkins Commands
+## Jenkins Overview
 The Jenkins build server runs Maven with these commands.
 
 Set Environment variables via script
@@ -143,14 +116,40 @@ In addition to "replacing" that string the "process-resources" phase does inline
 The most important change is to the `test/apickli/config/config.json` file which changes the basepath for the proxy so the tests go to the correct feature proxy in Apigee.
 Other changes are done on resources for the org, such as API products, Apps and Developers to profide artifacts for testing in each org / env.
 
-## Local Install and Set Up
+## Local Configuration
 In each source directory there is a `package.json` file that holds the required node packages.
 
-* Install node
-* Install maven
-* Install Apickli and cucumberjs
-    * cd source directory
-    * `npm install` (creates node_modules)
+* [Install Maven](https://maven.apache.org/install.html)
+* [Install Node](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) (optional, it's done by maven)
+
+Set your $HOME/.m2/settings.xml profile information for local builds.
+Example:
+```
+<?xml version="1.0"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                 https://maven.apache.org/xsd/settings-1.0.0.xsd">
+    <profiles>
+        <profile>
+            <id>test</id>
+            <!-- These are also the values for environment variables used by set-edge-env-values.sh for Jenkins -->
+            <properties>
+                <EdgeOrg>yourorgname</EdgeOrg>
+                <EdgeEnv>yourenv</EdgeEnv>
+                <EdgeUsername>yourusername@exco.com</EdgeUsername>
+                <EdgePassword>yourpassword</EdgePassword>
+                <EdgeNorthboundDomain>yourourgname-yourenv.apigee.net</EdgeNorthboundDomain>
+                <EdgeAuthtype>oauth</EdgeAuthtype>
+            </properties>
+        </profile>
+        ...
+    </profiles>
+</settings>
+```
+### Initial build and deploy
+`mvn -P test install ...` as per [Maven Commands - full build](#maven-commands---full-build).
+
 
 ## Maven Commands - full build
 Replacer copies and replaces the resources dir into the target. Note use of -Dapigee.config.dir option.
