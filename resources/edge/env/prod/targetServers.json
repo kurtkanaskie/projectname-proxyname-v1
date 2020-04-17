@@ -1,6 +1,6 @@
 [
     {
-        "name": "pingstatus-v1",
+        "name": "projectname-proxyname-v1",
         "host": "mocktarget.apigee.net",
         "isEnabled": true,
         "port": 443,
