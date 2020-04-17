@@ -10,21 +10,19 @@ It uses the Apigee provided plugins:
 Clone the repository and add your Maven profile for your Apigee organization and environment.
 * Then run the [Maven Commands - full build](#maven-commands---full-build).
 
-## Overview
-The proxy has the following endpoints which can be used for health check or monitoring.
-* GET /ping - response indicates that the proxy is operational
-* GET /status - response indicates the the backend is operational
-
-These endpoints can then be used by API Monitoring with Edge to send notifications when something is wrong.
-
 ## Disclaimer
 
 This example is not an official Google product, nor is it part of an official Google product.
 
 ## Notice and License
-[NOTICE](NOTICE) this material is copyright 2020, Google LLC. and [LICENSE](LICENSE) is under the Apache 2.0 license.
+[NOTICE](NOTICE) this material is copyright 2020, Google LLC. and [LICENSE](LICENSE) is under the Apache 2.0 license. This code is open source.
 
-This code is open source.
+## Overview
+The proxy has the following endpoints:
+* GET /ping - response indicates that the proxy is operational
+* GET /status - response indicates the the backend is operational
+
+They can be used with Edge API Monitoring to send notifications when something is wrong.
 
 ## CI/CD Overview
 Each proxy is managed as a single source code module that is self contained with the actual Apigee Edge proxy, config files for Edge Management API calls (e.g. KVMs, target servers), Open API Specification (OAS) and tests (status, unit, integration).
