@@ -53,6 +53,7 @@ Align Git branches with org / env combinations, with master being the lowest lev
 
 #### Test via Jenkins
 * git commit -am  "Added changes for feature1"
+* git push --set-upstream origin feature/jira1 (initially)
 * git push origin feature/jira1
 
 If the build succeeds you're ready to merge into the master branch.
