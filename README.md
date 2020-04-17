@@ -1,6 +1,10 @@
 # Project Specific Ping and Status API Template
 
-This proxy demonstrates a simple design to demonstrate a full CI/CD lifecycle for an API Proxy including static, unit, integration tests, API documentation for both Drupal and Integrated Portals.
+This proxy demonstrates a simple design to demonstrate a full CI/CD lifecycle for an API Proxy including static and unit tests, build and deploy, integration tests, and API documentation for both Drupal and Integrated Portals.
+It uses the Apigee provided plugins:
+* Build and deploy: [apigee-edge-maven-plugin](https://github.com/apigee/apigee-deploy-maven-plugin)
+* Configuration items, including specs: [apigee-config-maven-plugin](https://github.com/apigee/apigee-config-maven-plugin)
+* Smartdocs for Drupal 7 and 8: [apigee-smartdocs-maven-plugin](https://github.com/apigee/apigee-smartdocs-maven-plugin)
 
 ## TL;DR
 Clone the repository and add your Maven profile for your Apigee organization and environment.
@@ -36,43 +40,13 @@ The key components enabling continuous integration are:
 Basically, everything that Jenkins does using Maven and other tools can be done locally, either directly with the tool (e.g. jslint, cucumberjs) or via Maven commands. The sections below show how to do each.
 
 ## Git Commands
-Aling Git branches with org / env combinations, with master being the lowest level in lifecycle (e.g. test), then use pull requests to merge to downstream branches reflecting higher level deployements (e.g. prod).
+Align Git branches with org / env combinations, with master being the lowest level in lifecycle (e.g. test), then use pull requests to merge to downstream branches reflecting higher level deployments (e.g. prod).
 
 ### Intitial
 * git checkout -b prod
 * git push origin prod
 * git checkout master
 
-#### Initial Deploy
-Set your $HOME/.m2/settings.xml profile information for local builds.
-Example:
-```
-<?xml version="1.0"?>
-<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
-                 https://maven.apache.org/xsd/settings-1.0.0.xsd">
-    <profiles>
-        <profile>
-            <id>test</id>
-            <!-- These are also the values for environment variables used by set-edge-env-values.sh for Jenkins -->
-            <properties>
-                <EdgeOrg>yourorgname</EdgeOrg>
-                <EdgeEnv>yourenv</EdgeEnv>
-                <EdgeUsername>yourusername@exco.com</EdgeUsername>
-                <EdgePassword>yourpassword</EdgePassword>
-                <EdgeNorthboundDomain>yourourgname-yourenv.apigee.net</EdgeNorthboundDomain>
-                <EdgeAuthtype>oauth</EdgeAuthtype>
-            </properties>
-        </profile>
-        ...
-    </profiles>
-</settings>
-```
-##### Initial build and deploy to pingstatus-v1
-```
-mvn -P test install ...
-```
 ### Feature
 * git checkout -b feature/jira1 --- (MAKE changes for feature/jira1)
 
@@ -112,6 +86,35 @@ Or using this:
 * git checkout master
 
 ## Maven
+### Local Configuration
+Set your $HOME/.m2/settings.xml profile information for local builds.
+Example:
+```
+<?xml version="1.0"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                 https://maven.apache.org/xsd/settings-1.0.0.xsd">
+    <profiles>
+        <profile>
+            <id>test</id>
+            <!-- These are also the values for environment variables used by set-edge-env-values.sh for Jenkins -->
+            <properties>
+                <EdgeOrg>yourorgname</EdgeOrg>
+                <EdgeEnv>yourenv</EdgeEnv>
+                <EdgeUsername>yourusername@exco.com</EdgeUsername>
+                <EdgePassword>yourpassword</EdgePassword>
+                <EdgeNorthboundDomain>yourourgname-yourenv.apigee.net</EdgeNorthboundDomain>
+                <EdgeAuthtype>oauth</EdgeAuthtype>
+            </properties>
+        </profile>
+        ...
+    </profiles>
+</settings>
+```
+#### Initial build and deploy
+`mvn -P test install ...` as per [Maven Commands - full build](#maven-commands---full-build).
+
 ### Jenkins Commands
 The Jenkins build server runs Maven with these commands.
 
@@ -122,7 +125,11 @@ Set Environment variables via script
 This allows a single build project to be used for each of the branches including feature branches.
 
 ```
-install -P${EdgeProfile} -Ddeployment.suffix=${EdgeDeploySuffix} -Dapigee.org=${EdgeOrg} -Dapigee.env=${EdgeEnv} -Dapi.northbound.domain=${EdgeNorthboundDomain} -Dapigee.username=${EdgeInstallUsername} -Dapigee.password=${EdgeInstallPassword} -Dapigee.config.options=update -Dapigee.config.dir=target/resources/edge -Dapigee.config.exportDir=target/test/integration -Dcommit=${GIT_COMMIT} -Dbranch=${GIT_BRANCH}
+install -P${EdgeProfile} -Ddeployment.suffix=${EdgeDeploySuffix} \
+ -Dapigee.org=${EdgeOrg} -Dapigee.env=${EdgeEnv} -Dapi.northbound.domain=${EdgeNorthboundDomain} \
+ -Dapigee.username=${EdgeInstallUsername} -Dapigee.password=${EdgeInstallPassword} \
+ -Dapigee.config.options=update -Dapigee.config.dir=target/resources/edge -Dapigee.config.exportDir=target/test/integration \
+ -Dcommit=${GIT_COMMIT} -Dbranch=${GIT_BRANCH}
 ```
 
 Note the use of `-deployment.suffix=`. That is so the build and deploy to Apigee creates a separate proxy with a separate basepath to allow independent feature development. Your proxy will show up with a name (e.g. pingstatus-${user.name}v1) and basepath (e.g. /pingstatus/${user.name}v1).
