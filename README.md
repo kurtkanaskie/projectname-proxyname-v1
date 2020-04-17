@@ -81,7 +81,8 @@ Or using this:
 
 ### Merge Master Branch to Higher Environment Branches (e.g. prod)
 * git checkout prod
-* git pull
+* git config pull.rebase false (initially)
+* git push --set-upstream origin prod (initially then) git pull
 * git merge --no-ff master
 * git push
 * git checkout master
