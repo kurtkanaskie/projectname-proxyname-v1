@@ -44,12 +44,11 @@ Align Git branches with org / env combinations, with master being the lowest lev
 * git checkout -b prod
 * git push origin prod
 * git checkout master
-
-
 * `mvn -P test install ...` as per [Maven Commands - full build](#maven-commands---full-build).
 
 ### Feature Branches
 * git checkout -b feature/jira1 --- (MAKE changes for feature/jira1)
+* `mvn -P test install -Ddeployment.suffix=jira1 ...` as per [Maven Commands - full build](#maven-commands---full-build).
 
 #### Test via Jenkins
 * git commit -am  "Added changes for feature1"
@@ -206,3 +205,8 @@ mvn -P cicd-test **install** -Ddeployment.suffix= -Dapigee.config.options=update
 Do docs last (NOTE: specs will run before integration tests by default, hence the use of `-Dskip.specs=true` in install phase above)
 * mvn -P test apigee-smartdocs:apidoc -Dapigee.smartdocs.config.options=update
 * mvn -P cicd-test apigee-config:specs -Ddeployment.suffix= -Dapigee.config.options=update -Dapigee.config.dir=target/resources/edge
+
+## TODO
+* Test feature Branches
+* Incorporate App and Developer UUIDs into userrole
+*
