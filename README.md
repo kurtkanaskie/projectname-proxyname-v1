@@ -165,40 +165,40 @@ Builds use Maven which runs via configurations in a pom file (pom.xml). Maven [d
 * **verify**: caches, keyvalumaps, targetservers
 * **install**: install and deploy the package to a local repository
 
-The following "outer" commands run all phases up to the current phase, while the "inner" commands run independently.
+The following "outer" commands run all phases up to and including that phase, while the "inner" commands run independently and can be used for a step-by-step pipeline.
 
-* mvn validate
- * mvn jshint:lint
- * mvn frontend:install-node-and-npm
- * mvn frontend:npm
- * mvn frontend:npm@apigeelint
- * mvn frontend:npm@unit
-
-
-* mvn -P cicd-test process-resources -Ddeployment.suffix= -Dapigee.config.options=update -Dapigee.config.dir=target/resources/edge
- * mvn -P cicd-test resources:copy-resources@copy-resources
- * mvn -P cicd-test replacer:replace -Ddeployment.suffix= -Dapigee.config.options=update -Dapigee.config.dir=target/resources/edge
+mvn **validate**
+* mvn jshint:lint
+* mvn frontend:install-node-and-npm
+* mvn frontend:npm
+* mvn frontend:npm@apigeelint
+* mvn frontend:npm@unit
 
 
-* mvn -P cicd-test package -Ddeployment.suffix=
- * mvn -P cicd-test apigee-enterprise:configure
+mvn -P cicd-test **process-resources** -Ddeployment.suffix= -Dapigee.config.options=update -Dapigee.config.dir=target/resources/edge
+* mvn -P cicd-test resources:copy-resources@copy-resources
+* mvn -P cicd-test replacer:replace -Ddeployment.suffix= -Dapigee.config.options=update -Dapigee.config.dir=target/resources/edge
 
 
-* mvn -P cicd-test verify -Dapigee.config.options=update -Dapigee.config.dir=target/resources/edge
- * mvn -P cicd-test apigee-config:caches -Dapigee.config.options=update -Dapigee.config.dir=target/resources/edge
- * mvn -P cicd-test apigee-config:keyvaluemaps -Dapigee.config.options=update -Dapigee.config.dir=target/resources/edge
- * mvn -P cicd-test apigee-config:targetservers -Dapigee.config.options=update -Dapigee.config.dir=target/resources/edge
+mvn -P cicd-test **package** -Ddeployment.suffix=
+* mvn -P cicd-test apigee-enterprise:configure
 
 
-* mvn -P cicd-test install -Ddeployment.suffix= -Dapigee.config.options=update -Dapigee.config.dir=target/resources/edge -Dapigee.config.exportDir=target/test/integration -Dskip.specs=true
- * mvn -P cicd-test apigee-config:apiproducts -Ddeployment.suffix= -Dapigee.config.options=update -Dapigee.config.dir=target/resources/edge
- * mvn -P cicd-test apigee-config:developers -Ddeployment.suffix= -Dapigee.config.options=update -Dapigee.config.dir=target/resources/edge
- * mvn -P cicd-test apigee-config:apps -Ddeployment.suffix= -Dapigee.config.options=update -Dapigee.config.dir=target/resources/edge
- * mvn -P cicd-test apigee-config:exportAppKeys -Ddeployment.suffix= -Dapigee.config.options=update -Dapigee.config.dir=target/resources/edge -Dapigee.config.exportDir=target/test/integration
- * mvn -P cicd-test apigee-enterprise:deploy -Ddeployment.suffix=
- * mvn -P cicd-test frontend:npm@integration
+mvn -P cicd-test **verify** -Dapigee.config.options=update -Dapigee.config.dir=target/resources/edge
+* mvn -P cicd-test apigee-config:caches -Dapigee.config.options=update -Dapigee.config.dir=target/resources/edge
+* mvn -P cicd-test apigee-config:keyvaluemaps -Dapigee.config.options=update -Dapigee.config.dir=target/resources/edge
+* mvn -P cicd-test apigee-config:targetservers -Dapigee.config.options=update -Dapigee.config.dir=target/resources/edge
 
 
-* Do docs last
- * mvn -P test apigee-smartdocs:apidoc -Dapigee.smartdocs.config.options=update
- * mvn -P cicd-test apigee-config:specs -Ddeployment.suffix= -Dapigee.config.options=update -Dapigee.config.dir=target/resources/edge
+mvn -P cicd-test **install** -Ddeployment.suffix= -Dapigee.config.options=update -Dapigee.config.dir=target/resources/edge -Dapigee.config.exportDir=target/test/integration -Dskip.specs=true
+* mvn -P cicd-test apigee-config:userroles -Ddeployment.suffix= -Dapigee.config.options=update -Dapigee.config.dir=target/resources/edge
+* mvn -P cicd-test apigee-config:apiproducts -Ddeployment.suffix= -Dapigee.config.options=update -Dapigee.config.dir=target/resources/edge
+* mvn -P cicd-test apigee-config:developers -Ddeployment.suffix= -Dapigee.config.options=update -Dapigee.config.dir=target/resources/edge
+* mvn -P cicd-test apigee-config:apps -Ddeployment.suffix= -Dapigee.config.options=update -Dapigee.config.dir=target/resources/edge
+* mvn -P cicd-test apigee-config:exportAppKeys -Ddeployment.suffix= -Dapigee.config.options=update -Dapigee.config.dir=target/resources/edge -Dapigee.config.exportDir=target/test/integration
+* mvn -P cicd-test apigee-enterprise:deploy -Ddeployment.suffix=
+* mvn -P cicd-test frontend:npm@integration
+
+Do docs last (NOTE: specs will run before integration tests by default, hence the use of `-Dskip.specs=true` in install phase above)
+* mvn -P test apigee-smartdocs:apidoc -Dapigee.smartdocs.config.options=update
+* mvn -P cicd-test apigee-config:specs -Ddeployment.suffix= -Dapigee.config.options=update -Dapigee.config.dir=target/resources/edge
