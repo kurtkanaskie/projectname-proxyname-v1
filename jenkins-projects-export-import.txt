@@ -1,0 +1,2 @@
+curl http://localhost:8090/job/pingstatus-v1-with-rollback/config.xml
+curl 'http://localhost:8090/createItem?name=projectname-proxyname-v1' --header "Content-Type: application/xml" -d @projectname-proxyname-v1_jenkins_config.xml
