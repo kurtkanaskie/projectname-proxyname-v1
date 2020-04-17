@@ -40,7 +40,8 @@ Basically, everything that Jenkins does using Maven and other tools can be done 
 ## Git Commands
 Align Git branches with org / env combinations, with master being the lowest level in lifecycle (e.g. test), then use pull requests to merge to downstream branches reflecting higher level deployments (e.g. prod).
 
-### Master Branch (lowest environment)
+### Master Branch (initial configuration)
+* git clone 'git@github.com:kurtkanaskie/projectname-proxyname-v1.git'
 * git checkout -b prod
 * git push origin prod
 * git checkout master
