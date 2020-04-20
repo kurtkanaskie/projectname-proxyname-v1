@@ -37,15 +37,15 @@
 	{
 		"name":"ProjectName-APIDeveloper-Resources-APIGEE_ENVIRONMENT",
 	    "resourcepermissions": [
-	        {"path": "/applications/APIGEE_PROXY_NAME","permissions": ["get","put","delete"]},
+	        {"path": "/applications/projectname-proxyname-v1","permissions": ["get","put","delete"]},
 	        {"path": "/environments/APIGEE_ENVIRONMENT/caches/projectname-proxyname-v1","permissions": ["get","put","delete"]},
 	        {"path": "/environments/APIGEE_ENVIRONMENT/keyvaluemaps/projectname-proxyname-v1","permissions": ["get","put","delete"]},
 	        {"path": "/environments/APIGEE_ENVIRONMENT/targetservers/projectname-proxyname-v1","permissions": ["get","put","delete"]},
 
-	        {"path": "/apiproducts/APIGEE_PROXY_NAME-APIGEE_ENVIRONMENT","permissions": ["get","put","delete"]},
+	        {"path": "/apiproducts/projectname-proxyname-v1-APIGEE_ENVIRONMENT","permissions": ["get","put","delete"]},
 	        
-	        {"path": "/developers/APIGEE_PROXY_NAME-APIGEE_ENVIRONMENT@any.com","permissions": ["get","put","delete"]},
-	        {"path": "/developers/APIGEE_PROXY_NAME-APIGEE_ENVIRONMENT@any.com/apps/APIGEE_PROXY_NAME-APIGEE_ENVIRONMENT","permissions": ["get","put","delete"]},
+	        {"path": "/developers/projectname-proxyname-v1-APIGEE_ENVIRONMENT@any.com","permissions": ["get","put","delete"]},
+	        {"path": "/developers/projectname-proxyname-v1-APIGEE_ENVIRONMENT@any.com/apps/projectname-proxyname-v1-APIGEE_ENVIRONMENT","permissions": ["get","put","delete"]},
 	    ]
 	}
 ]

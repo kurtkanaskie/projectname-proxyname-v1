@@ -125,7 +125,7 @@
 			<properties>
 				<apigee.profile>cicd-test</apigee.profile>
 				<apigee.env>${EdgeEnv}</apigee.env>
-				<apigee.hosturl>https://api.enterprise.apigee.com</apigee.hosturl>
+				<apigee.hosturl>https://kurtkanaskiecicd-eval-test.apigee.net/edge-api</apigee.hosturl>
 				<apigee.apiversion>v1</apigee.apiversion>
 				<apigee.org>${EdgeOrg}</apigee.org>
 				<apigee.username>${EdgeUsername}</apigee.username>
@@ -233,8 +233,11 @@
 					<includes>
 						<include>apiproxy/projectname-proxyname-v1.xml</include>
 						<include>apiproxy/proxies/default.xml</include>
+						<include>apiproxy/targets/default.xml</include>
 						<include>test/integration/test-config.json</include>
 						<include>resources/edge/env/*/targetServers.json</include>
+						<include>resources/edge/env/*/caches.json</include>
+						<include>resources/edge/env/*/kvms.json</include>
 						<include>resources/edge/org/apiProducts.json</include>
 						<include>resources/edge/org/developerApps.json</include>
 						<include>resources/edge/org/developers.json</include>
@@ -250,6 +253,7 @@
 							<token>projectname-proxyname-v1</token>
 							<value>projectname-proxyname-${deployment.suffix}v1</value>
 						</replacement>
+						<!-- This for userroles -->
 						<replacement>
 							<token>APIGEE_ORG</token>
 							<value>${apigee.org}</value>
@@ -258,6 +262,7 @@
 							<token>APIGEE_ENVIRONMENT</token>
 							<value>${apigee.env}</value>
 						</replacement>
+						<!-- This for userroles, doesnt work on feature branches -->
 						<replacement>
 							<token>APIGEE_PROXY_NAME</token>
 							<value>${project.artifactId}</value>
