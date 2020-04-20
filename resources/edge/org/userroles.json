@@ -30,6 +30,7 @@
 		    { "path": "/apiproducts/*", "permissions": [] },
 		    
 		    {"path": "/environments/APIGEE_ENVIRONMENT/caches","permissions": ["put"]},
+		    {"path": "/environments/APIGEE_ENVIRONMENT/caches/*","permissions": []},
 		    {"path": "/environments/APIGEE_ENVIRONMENT/keyvaluemaps","permissions": ["put"]},
 		    {"path": "/environments/APIGEE_ENVIRONMENT/targetservers","permissions": ["put"]}
 		]

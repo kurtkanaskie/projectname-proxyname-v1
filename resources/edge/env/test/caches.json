@@ -2,5 +2,10 @@
   {
     "name" : "projectname-proxyname-v1"
     "description" : "Cache for projectname-proxyname-v1",
+    "expirySettings": {
+	    "timeoutInSec": {
+			"value": "420"
+	    }
+	}
   }
 ]
