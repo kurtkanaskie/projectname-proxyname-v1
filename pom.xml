@@ -264,27 +264,19 @@
 						<include>resources/specs/projectname-proxyname-v1.yaml</include>
 					</includes>
 					<replacements>
+						<!-- Proxy basepath -->
 						<replacement>
 							<token>/projectname-proxyname/v1</token>
 							<value>/projectname-proxyname/${deployment.suffix}v1</value>
 						</replacement>
+						<!-- Proxy name -->
 						<replacement>
 							<token>projectname-proxyname-v1</token>
 							<value>projectname-proxyname-${deployment.suffix}v1</value>
 						</replacement>
-						<!-- This for userroles -->
-						<replacement>
-							<token>APIGEE_ORG</token>
-							<value>${apigee.org}</value>
-						</replacement>
 						<replacement>
 							<token>APIGEE_ENVIRONMENT</token>
 							<value>${apigee.env}</value>
-						</replacement>
-						<!-- This for userroles, doesnt work on feature branches -->
-						<replacement>
-							<token>APIGEE_PROXY_NAME</token>
-							<value>${project.artifactId}</value>
 						</replacement>
 						<replacement>
 							<token>@DESCRIPTION</token>
@@ -402,7 +394,7 @@
 							<goal>specs</goal>
 						</goals>
 					</execution>
-					<!-- phase:install artifactId:apigee-config:specs -->
+					<!-- phase:install artifactId:apigee-config:userroles -->
 					<execution>
 						<id>create-config-userroles</id>
 						<phase>install</phase>                        
