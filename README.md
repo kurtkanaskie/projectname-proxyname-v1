@@ -209,6 +209,5 @@ Do docs last (NOTE: specs will run before integration tests by default, hence th
 * mvn -P cicd-test apigee-config:specs -Ddeployment.suffix= -Dapigee.config.options=update -Dapigee.config.dir=target/resources/edge
 
 ## TODO
-* Test feature Branches
 * Incorporate App and Developer UUIDs into userrole
-*
+
