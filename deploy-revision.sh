@@ -1,7 +1,7 @@
 #! /bin/bash
 
 # Deploy EdgeRevision if build fails
-# Needs to run after set-edge-env-values.sh and Injecting env variables so EdgeEnv and EdgeDeploySuffix is correct.
+# Needs to run after set-edge-env-values.sh and injecting env variables so EdgeEnv and EdgeDeploySuffix is correct.
 # Expects EdgeOrg, EdgeEnv, EdgeProxy and PreviousRevision env variables.
 
 # Deploy $PreviousRevision provided as environment variable in Jenkins build step
